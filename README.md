@@ -5,12 +5,12 @@ A simple Chrome extension that provides word definitions for selected text on an
 
 ## Table of Contents
 
-- 1.Overview
-- 2.Features
-- 3.Installation
-- 4.Usage
-- 5.File and Structure
-- 6.How it works
+ 1. Overview
+ 2. Features
+ 3. Installation
+ 4. Usage
+ 5. File and Structure
+ 6. How it works
 
 ## Overview
 
