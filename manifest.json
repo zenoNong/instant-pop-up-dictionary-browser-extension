@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Dictionary Extension",
-  "version": "1.0",
-  "description": "Provides definitions for selected text.",
+  "version": "2.0",
+  "description": "Provides definitions for selected text with a manual search option.",
   "permissions": [
     "contextMenus",
     "activeTab",
@@ -15,10 +15,10 @@
     "default_popup": "popup.html",
     "default_icon": "icon.png"
   },
-  "content_scripts": [
+  "web_accessible_resources": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["content.js"]
+      "resources": ["icon.png"],
+      "matches": ["<all_urls>"]
     }
   ]
 }
