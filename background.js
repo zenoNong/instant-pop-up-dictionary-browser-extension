@@ -24,16 +24,12 @@ function injectAndSendMessage(tabId, message) {
 
 // Listener for the context menu
 chrome.contextMenus.onClicked.addListener((info, tab) => {
-  // --- ADDED CHECK FOR INVALID TAB ID ---
   if (tab.id === -1) {
-    return; // Stop execution for invalid tab contexts like some PDF viewers
+    return;
   }
-
-  // --- ADDED CHECK FOR PROTECTED URLS ---
   if (tab.url.startsWith('edge://') || tab.url.startsWith('chrome://')) {
-    return; // Do nothing on protected pages
+    return;
   }
-
   if (info.menuItemId === "define" && info.selectionText) {
     const message = { action: "show_definition", text: info.selectionText };
     injectAndSendMessage(tab.id, message);
@@ -42,22 +38,36 @@ chrome.contextMenus.onClicked.addListener((info, tab) => {
 
 // Listener for messages from the POPUP
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    // Check if the message is from our popup to toggle the search box
     if (message.action === "toggle_search_box_from_popup") {
-        // Find the current active tab
         chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
             if (tabs[0]) {
                 const tab = tabs[0];
-                // --- ADDED CHECK FOR PROTECTED URLS ---
                 if (tab.url.startsWith('edge://') || tab.url.startsWith('chrome://')) {
-                  return; // Do nothing on protected pages
+                  return;
                 }
-                
-                // Use our reliable function to inject scripts and send the message
                 const message = { action: "toggle_search_box" };
-                // --- THIS LINE IS NOW CORRECTED ---
                 injectAndSendMessage(tab.id, message);
             }
         });
     }
 });
+
+// --- NEW CODE STARTS HERE ---
+// Listener for the keyboard shortcut command
+chrome.commands.onCommand.addListener((command) => {
+  if (command === "focus-search-box") {
+    // Find the current active tab
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      if (tabs[0]) {
+        const tab = tabs[0];
+        if (tab.url.startsWith('edge://') || tab.url.startsWith('chrome://')) {
+          return; // Do nothing on protected pages
+        }
+        // Send a new, specific message to focus the search box
+        const message = { action: "show_and_focus_search_box" };
+        injectAndSendMessage(tab.id, message);
+      }
+    });
+  }
+});
+// --- NEW CODE ENDS HERE ---

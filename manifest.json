@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
   "name": "Dictionary Extension",
-  "version": "2.0",
-  "description": "Provides definitions for selected text with a manual search option.",
+  "version": "2.1",
+  "description": "Provides definitions for selected text with a manual search option and keyboard shortcut.",
   "permissions": [
     "contextMenus",
     "activeTab",
@@ -20,5 +20,14 @@
       "resources": ["icon.png"],
       "matches": ["<all_urls>"]
     }
-  ]
+  ],
+  "commands": {
+    "focus-search-box": {
+      "suggested_key": {
+        "default": "Alt+Shift+D"
+      },
+      "description": "Open and focus the manual search box"
+    }
+  },
+  "options_page": "options.html"
 }
